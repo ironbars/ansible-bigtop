@@ -1,7 +1,7 @@
 Ansible for Bigtop
 ==================
 This repo is a collection of Ansible roles and playbooks for the deployment of a
-Hadoop cluster using packages built by [Apache Bigtop](bigtop.apache.org).
+Hadoop cluster using packages built by [Apache Bigtop](http://bigtop.apache.org).
 These scripts are eventually intended to be submitted to that project, as
 currently there are only recipes for Puppet.  
 
