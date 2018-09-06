@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+# Max number of concurrent connections that a _single_ client can make to a 
+# _single_ member of the ensemble
+maxClientCnxns={{ zk_max_client_cnxns }}
+# The number of milliseconds of each tick
+tickTime={{ zk_tick_time }}
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit={{ zk_init_limit }}
+# Number of ticks that represents how far out of date a server can be from a 
+# leader
+syncLimit={{ zk_sync_limit }}
+# On-disk location of the (in-memory) database snapshots
+dataDir={{ zk_data_dir }}
+# the port at which the clients will connect
+clientPort={{ zk_client_port }}
+# The following will make ZK aware of all servers that it will run on for 
+# replication
+{% for server in zk_quorum %}
+server.{{ zk_quorum[server] }}={{ server }}:2888:3888
+{% endfor %}

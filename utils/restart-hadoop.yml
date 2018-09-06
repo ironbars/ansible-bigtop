@@ -1,0 +1,16 @@
+---
+- name: restart zookeeper
+  import_playbook: services/zookeeper/restart-zookeeper.yml
+  tags: ["zookeeper"]
+
+- name: restart hdfs
+  import_playbook: services/hdfs/restart-hdfs.yml
+  tags: ["hdfs"]
+
+- name: restart yarn
+  import_playbook: services/yarn/restart-yarn.yml
+  tags: ["yarn"]
+
+- name: restart hive
+  import_playbook: services/hive/restart-hive.yml
+  tags: ["hive"]

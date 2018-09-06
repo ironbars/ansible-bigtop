@@ -1,0 +1,16 @@
+---
+- name: stop hive
+  import_playbook: services/hive/stop-hive.yml
+  tags: ["hive"]
+
+- name: stop yarn
+  import_playbook: services/yarn/stop-yarn.yml
+  tags: ["yarn"]
+
+- name: stop hdfs
+  import_playbook: services/hdfs/stop-hdfs.yml
+  tags: ["hdfs"]
+
+- name: stop zookeeper
+  import_playbook: services/zookeeper/stop-zookeeper.yml
+  tags: ["zookeeper"]

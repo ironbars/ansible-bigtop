@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+       Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <!-- Symbolic HDFS namespace list (only one currently) -->
+  <property>
+    <name>dfs.nameservices</name>
+    <value>{{ cluster_name }}</value>
+  </property>
+
+  <!-- Comma separated list of NameNodes -->
+  <property>
+    <name>dfs.ha.namenodes.{{ cluster_name }}</name>
+    <value>{{ groups['namenodes'] | join( '.' + dns_domain + ',') }}.{{ dns_domain }}</value>
+  </property>
+
+  <!-- Enable ACLs for NameNode admin access -->
+  <property>
+    <name>dfs.namenode.acls.enabled</name>
+    <value>true</value>
+  </property>
+
+  <!-- List of users who are HDFS admins -->
+  <property>
+    <name>dfs.cluster.administrators</name>
+    <value>{{ hdfs_admins | join(',') }}</value>
+  </property>
+
+  <!-- List of DataNodes; points to a file containing this list -->
+  <property>
+    <name>dfs.hosts</name>
+    <value>{{ hdfs_nodes_include }}</value>
+  </property>
+
+  <!-- List of DataNodes excluded and/or decommissioning -->
+  <property>
+    <name>dfs.hosts.exclude</name>
+    <value>{{ hdfs_nodes_exclude }}</value>
+  </property>
+
+  <!-- Fencing for failover -->
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>
+      {{ hdfs_fencing_methods | join('\n') }}
+    </value>
+  </property>
+
+  <!-- Private key file for sshfence -->
+  <property>
+    <name>dfs.ha.fencing.ssh.private-key-files</name>
+    <value>{{ hdfs_home_dir }}/.ssh/id_rsa</value>
+  </property>
+
+  <!-- Java class used by HDFS clients to contact the active NameNode -->
+  <property>
+    <name>dfs.client.failover.proxy.provider.{{ cluster_name }}</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+
+  <!-- RPC/HTTP addresses for NameNodes) -->
+  {% for host in groups['namenodes'] %}
+  <property>
+    <name>dfs.namenode.rpc-address.{{ cluster_name }}.{{ host }}</name>
+    <value>{{ host }}.{{ dns_domain }}:8020</value>
+  </property>
+  
+  <property>
+    <name>dfs.namenode.http-address.{{ cluster_name }}.{{ host }}</name>
+    <value>{{ host }}.{{ dns_domain }}:50070</value>
+  </property>
+  {% endfor %}
+
+  <!-- URI identifying group of JournalNodes where the NameNodes will write edits -->
+  <property>
+    <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://{{ groups['journalnodes'] | join('.' + dns_domain + ':8485,') }}.{{ dns_domain }}:8485/{{ cluster_name }}</value>
+  </property>
+
+  <!-- Location for the NameNode to store HDFS metadata -->
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file://{{ hdfs_name_dir }}</value>
+  </property>
+
+  <!-- Location for the JournalNodes to store edits that are logged to them -->
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>{{ hdfs_journal_dir }}</value>
+  </property>
+
+  <!-- Whether or not automatic failover is enabled -->
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+
+  <!-- HDFS supergroup (hadoop admins...?) -->
+  <property>
+    <name>dfs.permissions.supergroup</name>
+    <value>{{ hdfs_supergroup }}</value>
+  </property>
+
+  <!-- Default umask for HDFS -->
+  <property>
+    <name>fs.permissions.umask-mode</name>
+    <value>{{ hdfs_umask }}</value>
+  </property>
+
+  <!-- Data directories where DataNodes will store their blocks -->
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>{{ hdfs_data_dirs | join(',') }}</value>
+  </property>
+</configuration>
+

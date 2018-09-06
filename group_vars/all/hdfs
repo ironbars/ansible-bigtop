@@ -1,0 +1,33 @@
+hdfs_service_name: hadoop-hdfs
+
+hdfs_home_dir: /var/lib/{{ hdfs_service_name }}
+
+hdfs_log_dir: /var/log/{{ hdfs_service_name }}
+
+hdfs_pid_dir: /var/run/{{ hdfs_service_name }}
+
+hdfs_nodes_include: "{{ hadoop_conf_dir }}/dfs.include"
+
+hdfs_nodes_exclude: "{{ hadoop_conf_dir }}/dfs.exclude"
+
+hdfs_name_dir: "{{ hdfs_home_dir }}/cache/hdfs/dfs/name"
+
+hdfs_journal_dir: "{{ hdfs_home_dir }}/jn"
+
+hdfs_supergroup: hadoop
+
+hdfs_umask: 027
+
+hdfs_fencing_methods:
+  - sshfence(hdfs)
+  - shell(/bin/true)
+
+hdfs_data_dirs:
+  - /data/01
+  - /data/02
+  - /data/03
+  - /data/04
+
+hdfs_admins:
+  - hdfs
+  - root

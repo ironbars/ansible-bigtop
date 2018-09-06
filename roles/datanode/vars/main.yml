@@ -1,0 +1,3 @@
+---
+# vars file for datanode
+hdfs_daemon: datanode

@@ -1,0 +1,18 @@
+---
+- hosts: hive-metastore
+  tasks:
+    - name: start the hive metastore
+      service:
+        name: hive-metastore
+        state: started
+        enabled: no
+  tags: ["hive", "hive-metastore"]
+
+- hosts: hive-server
+  tasks:
+    - name: start hiveserver2
+      service:
+        name: hive-server2
+        state: started
+        enabled: no
+  tags: ["hive", "hive-server"]

@@ -1,0 +1,26 @@
+---
+- hosts: resourcemanagers
+  tasks:
+    - name: restart resourcemanager service
+      service:
+        name: hadoop-yarn-resourcemanager
+        state: restarted
+
+    - name: wait for resourcemanger to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8030
+
+    - name: restart the historyserver
+      service:
+        name: hadoop-yarn-historyserver
+        state: restarted
+  tags: ["yarn", "resourcemanagers"]
+
+- hosts: nodemanagers
+  tasks:
+    - name: restart nodemanagers
+      service:
+        name: hadoop-yarn-nodemanager
+        state: restarted
+  tags: ["yarn", "nodemanagers"]

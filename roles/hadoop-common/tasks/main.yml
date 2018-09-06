@@ -1,0 +1,80 @@
+---
+# tasks file for hadoop-common
+- name: copy out sh env file
+  template:
+    src: hadoop.sh.j2
+    dest: /etc/profile.d/hadoop.sh
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install base hadoop
+  yum:
+    name: hadoop
+    state: present
+
+- name: install mapreduce
+  yum:
+    name: hadoop-mapreduce
+    state: present
+
+- name: copy out core-site.xml template
+  template:
+    src: core-site.xml.j2
+    dest: "{{ hadoop_conf_dir }}/core-site.xml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out hdfs-site.xml template
+  template:
+    src: hdfs-site.xml.j2
+    dest: "{{ hadoop_conf_dir }}/hdfs-site.xml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out yarn-site.xml template
+  template:
+    src: yarn-site.xml.j2
+    dest: "{{ hadoop_conf_dir }}/yarn-site.xml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out mapred-site.xml template
+  template:
+    src: mapred-site.xml.j2
+    dest: "{{ hadoop_conf_dir }}/mapred-site.xml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out hadoop environment template
+  template:
+    src: hadoop-env.sh.j2
+    dest: "{{ hadoop_conf_dir }}/hadoop-env.sh"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out yarn environment template
+  template:
+    src: yarn-env.sh.j2
+    dest: "{{ hadoop_conf_dir }}/yarn-env.sh"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out node inclusion/exclusion lists for HDFS and YARN
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ hadoop_conf_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - dfs.include
+    - dfs.exclude
+    - yarn.include
+    - yarn.exclude

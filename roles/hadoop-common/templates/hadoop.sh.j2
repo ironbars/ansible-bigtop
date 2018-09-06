@@ -1,0 +1,9 @@
+#/!/bin/bash
+{{ ansible_managed | comment }}
+# This script will set Hadoop environment variables for anyone
+# with a UID greater than 1000.
+
+if [ `id -u` -gt 1000 ] ; then
+    export HADOOP_HOME=/usr/lib/hadoop
+    export JAVA_HOME=/usr/lib/jvm/java
+fi

@@ -1,0 +1,49 @@
+---
+- hosts: resourcemanagers
+  tasks:
+    - name: check if yarn is running
+      shell: "ps -ef | awk '$1 ~ /yarn/ {print $1}'"
+      register: yarn_running
+      tags: ["start-scheduling"]
+
+    - name: start yarn scheduling
+      xml:
+        path: /etc/hadoop/conf/capacity-scheduler.xml
+        xpath: /configuration/property[name='yarn.scheduler.capacity.root.default.state']/value
+        value: "RUNNING"
+      notify: refresh queues
+      tags: ["start-scheduling"]
+
+    - name: start resourcemanager
+      service:
+        name: hadoop-yarn-resourcemanager
+        state: started
+        enabled: no
+
+    - name: wait for resourcemanager to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8030
+
+    - name: start the historyserver
+      service:
+        name: hadoop-yarn-historyserver
+        state: started
+        enabled: no
+
+  handlers:
+    - name: refresh queues
+      become: yes
+      become_user: yarn
+      shell: "yarn rmadmin -refreshQueues"
+      when: ( yarn_running.stdout == "yarn" )
+  tags: ["yarn", "resourcemanagers"]
+
+- hosts: nodemanagers
+  tasks:
+    - name: start nodemanagers
+      service:
+        name: hadoop-yarn-nodemanager
+        state: started
+        enabled: no
+  tags: ["yarn", "nodemanagers"]

@@ -1,0 +1,19 @@
+cluster_name: bigtop
+
+dns_domain: mjpbigtop.org
+
+java_version: 1.8.0
+
+java_pkgs:
+  - java-{{ java_version }}-openjdk
+  - java-{{ java_version }}-openjdk-devel
+
+java_home: /usr/lib/jvm/java
+
+bigtop_repo:
+  name: bigtop
+  description: "Bigtop Hadoop packages"
+  baseurl: "http://repos.bigtop.apache.org/releases/1.2.1/centos/7/x86_64"
+  gpgcheck: yes
+  gpgkey: "https://dist.apache.org/repos/dist/release/bigtop/KEYS"
+  file: "bigtop"

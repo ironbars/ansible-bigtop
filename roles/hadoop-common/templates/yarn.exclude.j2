@@ -1,0 +1,3 @@
+{% for node in groups['decom-nodemanagers'] %}
+{{ node }}.{{ dns_domain }}
+{% endfor %}

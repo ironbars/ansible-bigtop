@@ -1,0 +1,4 @@
+zk_quorum:
+  nn01: 1
+  nn02: 2
+  rm01: 3

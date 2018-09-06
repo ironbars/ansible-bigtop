@@ -1,0 +1,10 @@
+---
+# defaults file for zookeeper
+zk_service_name: zookeeper
+zk_home_dir: /var/lib/{{ zk_service_name }}
+zk_data_dir: "{{ zk_home_dir }}"
+zk_max_client_cnxns: 50
+zk_tick_time: 2000
+zk_init_limit: 10
+zk_sync_limit: 5
+zk_client_port: 2181

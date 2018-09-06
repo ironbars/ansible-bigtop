@@ -1,0 +1,28 @@
+---
+# tasks file for journalnode
+- name: install journalnode
+  yum:
+    name: hadoop-hdfs-journalnode
+    state: present
+
+- name: create the journalnode edits directory
+  file:
+    path: "{{ hdfs_journal_dir }}/{{ cluster_name }}"
+    state: directory
+    recurse: yes
+    owner: hdfs
+    group: hadoop
+    mode: 0775
+
+- name: distribute the daemon service file
+  template:
+    src: hadoop-hdfs-daemon.service.j2
+    dest: /etc/systemd/system/hadoop-hdfs-{{ hdfs_daemon }}.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: explicitly disable journalnode service
+  service:
+    name: hadoop-hdfs-journalnode
+    enabled: no

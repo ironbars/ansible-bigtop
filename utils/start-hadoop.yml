@@ -1,0 +1,16 @@
+---
+- name: start zookeeper
+  import_playbook: services/zookeeper/start-zookeeper.yml
+  tags: ["zookeeper"]
+
+- name: start hdfs
+  import_playbook: services/hdfs/start-hdfs.yml
+  tags: ["hdfs"]
+
+- name: start yarn
+  import_playbook: services/yarn/start-yarn.yml
+  tags: ["yarn"]
+
+- name: start hive
+  import_playbook: services/hive/start-hive.yml
+  tags: ["hive"]

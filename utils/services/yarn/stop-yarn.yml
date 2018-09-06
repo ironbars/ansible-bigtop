@@ -1,0 +1,38 @@
+---
+- hosts: resourcemanagers
+  tasks:
+    - name: stop yarn scheduling
+      xml:
+        path: /etc/hadoop/conf/capacity-scheduler.xml
+        xpath: /configuration/property[name='yarn.scheduler.capacity.root.default.state']/value
+        value: "STOPPED"
+      notify: refresh queues
+      tags: ["stop-scheduling"]
+
+  handlers:
+    - name: refresh queues
+      become: yes
+      become_user: yarn
+      shell: "yarn rmadmin -refreshQueues"
+  tags: ["yarn", "resourcemanagers"]
+
+- hosts: nodemanagers
+  tasks:
+    - name: stop nodemanagers
+      service:
+        name: hadoop-yarn-nodemanager
+        state: stopped
+  tags: ["yarn", "nodemanagers"]
+
+- hosts: resourcemanagers
+  tasks:
+    - name: stop historyserver
+      service:
+        name: hadoop-yarn-historyserver
+        state: stopped
+
+    - name: stop resourcemanager
+      service:
+        name: hadoop-yarn-resourcemanager
+        state: stopped
+  tags: ["yarn", "resourcemanagers"]

@@ -1,0 +1,29 @@
+---
+- hosts: datanodes
+  tasks:
+    - name: stop datanodes
+      service:
+        name: hadoop-hdfs-datanode
+        state: stopped
+  tags: ["hdfs", "datanodes"]
+
+- hosts: namenodes
+  tasks:
+    - name: stop namenodes
+      service:
+        name: hadoop-hdfs-namenode
+        state: stopped
+
+    - name: stop zkfc
+      service:
+        name: hadoop-hdfs-zkfc
+        state: stopped
+  tags: ["hdfs", "namenodes", "journalnodes"]
+
+- hosts: journalnodes
+  tasks:
+    - name: stop journalnodes
+      service:
+        name: hadoop-hdfs-journalnode
+        state: stopped
+  tags: ["hdfs", "journalnodes"]

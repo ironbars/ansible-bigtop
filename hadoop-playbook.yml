@@ -1,0 +1,30 @@
+---
+- hosts: all
+  tasks:
+    - name: install java
+      yum:
+        name: "{{ java_pkgs }}"
+        state: installed
+
+    - name: setup bigtop repo
+      yum_repository:
+        name: "{{ bigtop_repo.name }}"
+        description: "{{ bigtop_repo.description | default(omit) }}"
+        baseurl: "{{ bigtop_repo.baseurl }}"
+        gpgcheck: "{{ bigtop_repo.gpgcheck }}"
+        gpgkey: "{{ bigtop_repo.gpgkey | default(omit) }}"
+        file: "{{ bigtop_repo.file }}"
+        enabled: yes
+  tags: ["hadoop-deps"]
+
+- hosts: zookeeper
+  roles:
+    - { role: zookeeper, tags: ["zookeeper"] }
+
+- hosts: hadoop
+  roles:
+    - { role: hadoop-common, tags: ["hadoop-common", "hadoop"] }
+
+- hosts: journalnodes
+  roles:
+    - { role: journalnode, tags: ["journalnodes", "hadoop"] }

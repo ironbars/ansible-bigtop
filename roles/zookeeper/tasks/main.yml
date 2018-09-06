@@ -1,0 +1,50 @@
+---
+# tasks file for zookeeper
+- name: install zookeeper-server package
+  yum:
+    name: zookeeper-server
+    state: present
+
+- name: copy out zoo.cfg template
+  template:
+    src: zoo.cfg.j2
+    dest: /etc/zookeeper/conf/zoo.cfg
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure data directory is present
+  file:
+    path: "{{ zk_data_dir }}"
+    owner: zookeeper
+    group: zookeeper
+    mode: 0750
+    state: directory
+
+- name: write out server id
+  copy:
+    content: "{{ zk_quorum[inventory_hostname] }}"
+    dest: "{{ zk_data_dir }}/myid"
+    owner: zookeeper
+    group: zookeeper
+    mode: 0640
+
+- name: copy out systemd service template
+  template:
+    src: zookeeper-server.service.j2
+    dest: /etc/systemd/system/zookeeper-server.service
+    owner: root
+    group: root
+    mode: 0644
+  register: zookeeper_service
+
+- name: reload systemd units
+  systemd:
+    name: zookeeeper-server
+    daemon_reload: yes
+  when: zookeeper_service.changed
+
+- name: start/enable zookeeper-server
+  systemd:
+    name: zookeeper-server
+    enabled: yes

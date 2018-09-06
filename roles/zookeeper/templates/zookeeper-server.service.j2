@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Zookeeper Server
+
+[Service]
+Type=forking
+User=zookeeper
+Group=zookeeper
+KillMode=process
+SuccessExitStatus=143
+WorkingDirectory={{ zk_data_dir }}
+RuntimeDirectory={{ zk_service_name }}
+RuntimeDirectoryMode=0755
+PIDFile=/var/run/{{ zk_service_name }}/zookeeper_server.pid
+ExecStart=/usr/bin/zookeeper-server start
+
+[Install]
+WantedBy=multi-user.target

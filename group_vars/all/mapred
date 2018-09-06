@@ -1,0 +1,14 @@
+mapred_framework: yarn
+
+mapred_map_cores:
+
+mapred_map_memory: 2048
+
+mapred_map_heapsize: 1536
+
+mapred_reduce_cores:
+
+mapred_reduce_memory: 4096
+
+mapred_reduce_heapsize: 3584
+

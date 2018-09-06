@@ -1,0 +1,82 @@
+---
+- hosts: journalnodes
+  tasks:
+    - name: start journalnodes
+      service:
+        name: hadoop-hdfs-journalnode
+        state: started
+        enabled: no
+
+    - name: wait for journalnode to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8485
+        delay: 5
+  tags: ["hdfs", "journalnodes", "namenodes"]
+
+- hosts: namenodes
+  tasks:
+    - set_fact:
+        format_hdfs: false
+
+- hosts: namenodes[0]
+  tasks:
+    block:
+      - name: format hdfs
+        shell: "hdfs namenode -format {{ cluster_name }} -force"
+
+      - name: initialize hdfs shared edits directory
+        shell: "hdfs namenode -initializeSharedEdits -force"
+    become: yes
+    become_user: hdfs
+    when: ( format_hdfs == true )
+
+    - name: start first namenode
+      service:
+        name: hadoop-hdfs-namenode
+        state: started
+        enabled: no
+  tags: ["hdfs", "journalnodes", "namenodes"]
+
+- hosts: namenodes[1]
+  tasks:
+    block:
+      - name: bootstrap standby namenode
+        shell: "hdfs namenode -bootstrapStandby"
+
+      - name: format zookeeper
+        shell: "hdfs zkfc -formatZK"
+    become: yes
+    become_user: hdfs
+    when: ( format_hdfs == true )
+
+    - name: start second namenode
+      service:
+        name: hadoop-hdfs-namenode
+        state: started
+        enabled: no
+  tags: ["hdfs", "journalnodes", "namenodes"]
+
+- hosts: namenodes
+  tasks:
+    - name: wait for namenodes to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8020
+        delay: 5
+
+    - name: start zkfc
+      service:
+        name: hadoop-hdfs-zkfc
+        state: started
+        enabled: no
+  tags: ["hdfs", "journalnodes", "namenodes"]
+
+- hosts: datanodes
+  tasks:
+    - name: start datanodes
+      service:
+        name: hadoop-hdfs-datanode
+        state: started
+        enabled: no
+  tags: ["hdfs", "datanodes"]

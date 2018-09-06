@@ -1,0 +1,43 @@
+---
+- hosts: journalnodes
+  serial: 1
+  tasks:
+    - name: restart journalnode service
+      service:
+        name: hadoop-hdfs-journalnode
+        state: restarted
+    
+    - name: wait for journalnode to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8485
+        delay: 5
+  tags: ["hdfs", "journalnodes"]
+
+- hosts: namenodes
+  serial: 1
+  tasks:
+    - name: restart zkfc
+      service:
+        name: hadoop-hdfs-zkfc
+        state: restarted
+
+    - name: restart namenode service
+      service:
+        name: hadoop-hdfs-namenode
+        state: restarted
+
+    - name: wait for namenode to become available
+      wait_for:
+        host: "{{ ansible_hostname }}"
+        port: 8020
+        delay: 5
+  tags: ["hdfs", "namenodes"]
+
+- hosts: datanodes
+  tasks:
+    - name: restart datanode service
+      service:
+        name: hadoop-hdfs-datanode
+        state: restarted
+  tags: ["hdfs", "datanodes"]
