@@ -21,15 +21,15 @@
 
 - hosts: namenodes[0]
   tasks:
-    block:
-      - name: format hdfs
-        shell: "hdfs namenode -format {{ cluster_name }} -force"
+    - block:
+        - name: format hdfs
+          shell: "hdfs namenode -format {{ cluster_name }} -force"
 
-      - name: initialize hdfs shared edits directory
-        shell: "hdfs namenode -initializeSharedEdits -force"
-    become: yes
-    become_user: hdfs
-    when: ( format_hdfs == true )
+        - name: initialize hdfs shared edits directory
+          shell: "hdfs namenode -initializeSharedEdits -force"
+      become: yes
+      become_user: hdfs
+      when: ( format_hdfs == true )
 
     - name: start first namenode
       service:
@@ -40,15 +40,15 @@
 
 - hosts: namenodes[1]
   tasks:
-    block:
-      - name: bootstrap standby namenode
-        shell: "hdfs namenode -bootstrapStandby"
+    - block:
+        - name: bootstrap standby namenode
+          shell: "hdfs namenode -bootstrapStandby"
 
-      - name: format zookeeper
-        shell: "hdfs zkfc -formatZK"
-    become: yes
-    become_user: hdfs
-    when: ( format_hdfs == true )
+        - name: format zookeeper
+          shell: "hdfs zkfc -formatZK"
+      become: yes
+      become_user: hdfs
+      when: ( format_hdfs == true )
 
     - name: start second namenode
       service:
