@@ -59,8 +59,8 @@ $ ansible-playbook --tags 'hive-metastore' utils/services/hive/restart-hive.yml
 Requirements
 ------------
 
-OS: CentOS 7.4, CentOS 7.5
-Hadoop: 2.x
+OS: CentOS 7.4, CentOS 7.5  
+Hadoop: 2.x  
 Java > 1.6 (but < 1.9)
 
 Starting at the top, the following variables must properly defined in
