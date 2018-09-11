@@ -36,7 +36,7 @@
         name: hadoop-hdfs-namenode
         state: started
         enabled: no
-  tags: ["hdfs", "journalnodes", "namenodes"]
+  tags: ["hdfs", "namenodes"]
 
 - hosts: namenodes[1]
   tasks:
@@ -55,7 +55,7 @@
         name: hadoop-hdfs-namenode
         state: started
         enabled: no
-  tags: ["hdfs", "journalnodes", "namenodes"]
+  tags: ["hdfs", "namenodes"]
 
 - hosts: namenodes
   tasks:
@@ -70,7 +70,7 @@
         name: hadoop-hdfs-zkfc
         state: started
         enabled: no
-  tags: ["hdfs", "journalnodes", "namenodes"]
+  tags: ["hdfs", "namenodes"]
 
 - hosts: datanodes
   tasks:
