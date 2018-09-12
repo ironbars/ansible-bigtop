@@ -28,3 +28,7 @@
 - hosts: journalnodes
   roles:
     - { role: journalnode, tags: ["journalnodes", "hadoop"] }
+
+- hosts: namenodes
+  roles:
+    - { role: namenode, tags: ["namenodes", "hadoop"] }

@@ -7,40 +7,46 @@
 
 - name: copy out namenode service file
   template:
-    src: hadoop-hdfs-{{ hdfs_daemon }}.service.j2
-    dest: /etc/systemd/sytem/hadoop-hdfs-{{ hdfs_daemon }}.service
+    src: hadoop-hdfs-daemon.service.j2
+    dest: /etc/systemd/system/hadoop-hdfs-{{ hdfs_daemon }}.service
     owner: root
     group: root
     mode: 0644
 
 - name: create ssh directory for hdfs user
   file:
-    mode: 700
-    owner: hdfs
-    path: "{{ hdfs_home_dir }}"/.ssh
+    path: "{{ hdfs_home_dir }}/.ssh"
     state: directory
+    owner: hdfs
+    group: hdfs
+    mode: 0700
 
 - name: create ssh keypair
   shell: ssh-keygen -t rsa -N '' -f {{ hdfs_home_dir | quote }}/.ssh/id_rsa
+  become: yes
+  become_user: hdfs
   args:
     creates: "{{ hdfs_home_dir }}/.ssh/id_rsa"
   run_once: true
-  delegate_to: namenodes[0]
-  become: yes
-  become_user: hdfs
 
 - name: distribute ssh keypair
   synchronize:
     src: "{{ hdfs_home_dir }}/.ssh/"
     dest: "{{ hdfs_home_dir }}/.ssh/"
     archive: yes
-  delegate_to: namenodes[0]
+  run_once: true
+  delegate_to: "{{ groups['namenodes'][0] }}"
 
-- name: add hdfs key for ssh
+- name: retrieve hdfs public key
+  shell: cat {{ hdfs_home_dir | quote }}/.ssh/id_rsa.pub
+  register: hdfs_pub_key
+  run_once: true
+
+- name: install hdfs public key
   authorized_key:
     user: hdfs
     state: present
-    key: "{{ lookup('file', hdfs_home_dir + '/.ssh/id_rsa.pub') }}"
+    key: "{{ hdfs_pub_key.stdout }}"
 
 - name: install zkfc
   yum:
