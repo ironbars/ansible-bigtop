@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+HADOOP_HOME={{ hadoop_home }}
+HADOOP_PREFIX={{ hadoop_home }}
+HADOOP_LIBEXEC_DIR={{ hadoop_home }}/libexec
+HADOOP_CONF_DIR={{ hadoop_conf_dir }}
+HADOOP_COMMON_HOME={{ hadoop_home }}
+HADOOP_HDFS_HOME=/usr/lib/{{ hdfs_service_name }}
+HADOOP_MAPRED_HOME=/usr/lib/{{ mapred_service_name }}
+HADOOP_YARN_HOME=/usr/lib/{{ yarn_service_name }}
+JSVC_HOME=/usr/lib/bigtop-utils

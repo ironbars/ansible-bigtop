@@ -78,3 +78,11 @@
     - dfs.exclude
     - yarn.include
     - yarn.exclude
+
+- name: copy out hadoop daemon configuration file (defaults)
+  template:
+    src: etc-default-hadoop.j2
+    dest: /etc/default/hadoop
+    owner: root
+    group: root
+    mode: 0644
