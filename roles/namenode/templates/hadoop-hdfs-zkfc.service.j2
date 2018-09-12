@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 [Unit]
-Description=HDFS {{ hdfs_daemon }} service
+Description=HDFS zkfc service
 Requires=network.target
 After=network.target remote-fs.target
 
@@ -16,10 +16,10 @@ EnvironmentFile=-/etc/default/hadoop
 RuntimeDirectory={{ hdfs_service_name }}
 RuntimeDirectoryMode=0755
 WorkingDirectory={{ hdfs_home_dir }}
-PIDFile={{ hdfs_pid_dir }}/hadoop-hdfs-{{ hdfs_daemon }}.pid
-ExecStart=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} start {{ hdfs_daemon }}
+PIDFile={{ hdfs_pid_dir }}/hadoop-hdfs-zkfc.pid
+ExecStart=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} start zkfc
 ExecStartPost=/usr/bin/sleep 5
-ExecStop=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} stop {{ hdfs_daemon }}
+ExecStop=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} stop zkfc
 
 [Install]
 WantedBy=multi-user.target

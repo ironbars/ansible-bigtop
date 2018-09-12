@@ -1,2 +1,66 @@
 ---
 # tasks file for namenode
+- name: install namenode
+  yum:
+    name: hadoop-hdfs-namenode
+    state: present
+
+- name: copy out namenode service file
+  template:
+    src: hadoop-hdfs-{{ hdfs_daemon }}.service.j2
+    dest: /etc/systemd/sytem/hadoop-hdfs-{{ hdfs_daemon }}.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create ssh directory for hdfs user
+  file:
+    mode: 700
+    owner: hdfs
+    path: "{{ hdfs_home_dir }}"/.ssh
+    state: directory
+
+- name: create ssh keypair
+  shell: ssh-keygen -t rsa -N '' -f {{ hdfs_home_dir | quote }}/.ssh/id_rsa
+  args:
+    creates: "{{ hdfs_home_dir }}/.ssh/id_rsa"
+  run_once: true
+  delegate_to: namenodes[0]
+  become: yes
+  become_user: hdfs
+
+- name: distribute ssh keypair
+  synchronize:
+    src: "{{ hdfs_home_dir }}/.ssh/"
+    dest: "{{ hdfs_home_dir }}/.ssh/"
+    archive: yes
+  delegate_to: namenodes[0]
+
+- name: add hdfs key for ssh
+  authorized_key:
+    user: hdfs
+    state: present
+    key: "{{ lookup('file', hdfs_home_dir + '/.ssh/id_rsa.pub') }}"
+
+- name: install zkfc
+  yum:
+    name: hadoop-hdfs-zkfc
+    state: present
+
+- name: distribute zkfc service file
+  template:
+    src: hadoop-hdfs-zkfc.service.j2
+    dest: /etc/systemd/system/hadoop-hdfs-zkfc.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: explicitly disable namenode
+  service:
+    name: hadoop-hdfs-{{ hdfs_daemon }}
+    enabled: no
+
+- name: explicitly disable zkfc
+  service:
+    name: hadoop-hdfs-zkfc
+    enabled: no
