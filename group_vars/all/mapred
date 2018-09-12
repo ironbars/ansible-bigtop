@@ -1,3 +1,5 @@
+mapred_service_name: hadoop-mapreduce
+
 mapred_framework: yarn
 
 mapred_map_cores:
