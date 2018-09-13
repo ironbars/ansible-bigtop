@@ -89,7 +89,7 @@
   <!-- URI identifying group of JournalNodes where the NameNodes will write edits -->
   <property>
     <name>dfs.namenode.shared.edits.dir</name>
-    <value>qjournal://{{ groups['journalnodes'] | join('.' + dns_domain + ':8485,') }}.{{ dns_domain }}:8485/{{ cluster_name }}</value>
+    <value>qjournal://{{ groups['journalnodes'] | join('.' + dns_domain + ':8485;') }}.{{ dns_domain }}:8485/{{ cluster_name }}</value>
   </property>
 
   <!-- Location for the NameNode to store HDFS metadata -->
