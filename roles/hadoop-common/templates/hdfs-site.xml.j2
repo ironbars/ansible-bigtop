@@ -26,7 +26,7 @@
   <!-- Comma separated list of NameNodes -->
   <property>
     <name>dfs.ha.namenodes.{{ cluster_name }}</name>
-    <value>{{ groups['namenodes'] | join( '.' + dns_domain + ',') }}.{{ dns_domain }}</value>
+    <value>{{ groups['namenodes'] | join(',') }}</value>
   </property>
 
   <!-- Enable ACLs for NameNode admin access -->

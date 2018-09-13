@@ -14,11 +14,6 @@
         delay: 5
   tags: ["hdfs", "journalnodes", "namenodes"]
 
-- hosts: namenodes
-  tasks:
-    - set_fact:
-        format_hdfs: false
-
 - hosts: namenodes[0]
   tasks:
     - block:
