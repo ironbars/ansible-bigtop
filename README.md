@@ -100,7 +100,6 @@ TODO
 ----
 Add roles for:
 
-- NameNodes
 - DataNodes
 - ResourceManagers
 - NodeManagers

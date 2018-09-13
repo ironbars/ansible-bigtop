@@ -2,3 +2,4 @@ TODO
 hosts.bigtop
 ansible.cfg
 *.swp
+*.retry
