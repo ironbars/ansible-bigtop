@@ -1,4 +1,29 @@
 ---
+- hosts: namenodes
+  tasks:
+    - name: check HDFS tmp directory for correct permissions
+      shell: hdfs dfs -ls / | awk '$NF ~ /\/tmp$/ {print $1}'
+      become: yes
+      become_user: hdfs
+      register: hdfs_tmp_permissions
+
+    - name: set correct permissions on HDFS tmp if they are incorrect
+      shell: hdfs dfs -chmod 1777 /tmp
+      become: yes
+      become_user: hdfs
+      when: ( hdfs_tmp_permissions.stdout != "drwxrwxrwt" )
+
+    - name: create the metastore warehouse directory in HDFS
+      shell: |
+        hdfs dfs -mkdir -p /user/hive/warehouse &&
+        hdfs dfs -chmod g+w /user/hive/warehouse &&
+        touch {{ hdfs_home_dir | quote }}/hive-ms
+      become: yes
+      become_user: hdfs
+      args:
+        creates: /var/lib/hadoop-hdfs/hive-ms
+  tags: ["hive", "hive-metastore"]
+
 - hosts: hive-metastore
   tasks:
     - name: start the hive metastore
