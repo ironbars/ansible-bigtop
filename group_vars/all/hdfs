@@ -1,10 +1,14 @@
 hdfs_service_name: hadoop-hdfs
 
+# Settings for environment variables
 hdfs_home_dir: /var/lib/{{ hdfs_service_name }}
 
 hdfs_log_dir: /var/log/{{ hdfs_service_name }}
 
 hdfs_pid_dir: /var/run/{{ hdfs_service_name }}
+
+# Settings for config file
+hdfs_ha: true
 
 hdfs_nodes_include: "{{ hadoop_conf_dir }}/dfs.include"
 
