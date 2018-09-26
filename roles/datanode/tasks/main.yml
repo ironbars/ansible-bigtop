@@ -8,21 +8,3 @@
     group: hdfs
     mode: 0700
   with_items: "{{ hdfs_data_dirs }}" 
-
-- name: install datanode
-  yum:
-    name: hadoop-hdfs-datanode
-    state: present
-
-- name: distribute the datanode service file
-  template:
-    src: hadoop-hdfs-daemon.service.j2
-    dest: /etc/systemd/system/hadoop-hdfs-{{ hdfs_daemon }}.service
-    owner: root
-    group: root
-    mode: 0644
-
-- name: explicitly disable datanode service
-  service:
-    name: hadoop-hdfs-{{ hdfs_daemon }}
-    enabled: no

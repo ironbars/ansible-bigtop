@@ -52,8 +52,8 @@ galaxy_info:
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
 
-  dependencies: 
-    - { role: hdfs, hdfs_daemon: namenode }
-    - { role: hdfs, hdfs_daemon: zkfc, when: hdfs_ha == true }
+dependencies: 
+  - { role: hdfs, hdfs_daemon: namenode }
+  - { role: hdfs, hdfs_daemon: zkfc, when: hdfs_ha == true }
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
