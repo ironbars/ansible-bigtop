@@ -1,0 +1,36 @@
+---
+- name: create ssh directory for hdfs user
+  file:
+    path: "{{ hdfs_home_dir }}/.ssh"
+    state: directory
+    owner: hdfs
+    group: hdfs
+    mode: 0700
+
+- name: create ssh keypair
+  shell: ssh-keygen -t rsa -N '' -f {{ hdfs_home_dir | quote }}/.ssh/id_rsa
+  become: yes
+  become_user: hdfs
+  args:
+    creates: "{{ hdfs_home_dir }}/.ssh/id_rsa"
+  run_once: true
+
+- name: distribute ssh keypair
+  synchronize:
+    src: "{{ hdfs_home_dir }}/.ssh/"
+    dest: "{{ hdfs_home_dir }}/.ssh/"
+    archive: yes
+  run_once: true
+  delegate_to: "{{ groups['namenodes'][0] }}"
+
+- name: retrieve hdfs public key
+  shell: cat {{ hdfs_home_dir | quote }}/.ssh/id_rsa.pub
+  register: hdfs_pub_key
+  run_once: true
+
+- name: install hdfs public key
+  authorized_key:
+    user: hdfs
+    state: present
+    key: "{{ hdfs_pub_key.stdout }}"
+
