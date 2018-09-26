@@ -1,0 +1,4 @@
+---
+# defaults file for hdfs
+hdfs_daemon: datanode
+hdfs_daemon_name: hadoop-hdfs-{{ hdfs_daemon }}
