@@ -20,7 +20,7 @@ hdfs_journal_dir: "{{ hdfs_home_dir }}/jn"
 
 hdfs_supergroup: hadoop
 
-hdfs_umask: 027
+hdfs_umask: "027"
 
 hdfs_fencing_methods:
   - sshfence(hdfs)
