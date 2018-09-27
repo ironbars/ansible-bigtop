@@ -1,36 +1,58 @@
 ---
-- name: create ssh directory for hdfs user
-  file:
-    path: "{{ hdfs_home_dir }}/.ssh"
-    state: directory
-    owner: hdfs
-    group: hdfs
-    mode: 0700
+# This file contains tasks to allow the hdfs user to ssh between NameNodes for 
+# ssh fencing in an HA setup.
 
+# Note that there are better ways to handle key distribuiton via Ansible; the
+# way below, however, assumes nothing about a particular site (e.g. can certain
+# users ssh between nodes using a key, is there an rsync daemon running that 
+# would make file copying easier, etc.).  It also doesn't require that you 
+# have a key created and ready to distribute.  Perhaps in the future, we can 
+# add some options to allow such a thing.
 - name: create ssh keypair
   shell: ssh-keygen -t rsa -N '' -f {{ hdfs_home_dir | quote }}/.ssh/id_rsa
   become: yes
   become_user: hdfs
   args:
     creates: "{{ hdfs_home_dir }}/.ssh/id_rsa"
-  run_once: true
 
-- name: distribute ssh keypair
-  synchronize:
-    src: "{{ hdfs_home_dir }}/.ssh/"
-    dest: "{{ hdfs_home_dir }}/.ssh/"
-    archive: yes
-  run_once: true
-  delegate_to: "{{ groups['namenodes'][0] }}"
-
-- name: retrieve hdfs public key
+- name: retrieve hdfs pub key
   shell: cat {{ hdfs_home_dir | quote }}/.ssh/id_rsa.pub
   register: hdfs_pub_key
-  run_once: true
 
-- name: install hdfs public key
-  authorized_key:
-    user: hdfs
-    state: present
-    key: "{{ hdfs_pub_key.stdout }}"
+- name: retrieve public host key
+  shell: cat /etc/ssh/ssh_host_ecdsa_key.pub
+  register: host_pub_key
 
+- name: install keys onto first NameNode
+  block:
+    - name: install second pub key onto first NameNode
+      authorized_key:
+        user: hdfs
+        key: "{{ hostvars[groups['namenodes'][1]]['hdfs_pub_key']['stdout'] }}"
+        state: present
+
+    - name: install second host key onto first NameNode
+      known_hosts:
+        name: "{{ groups['namenodes'][1] }}"
+        key: "{{ groups['namenodes'][1] + ' ' + hostvars[groups['namenodes'][1]]['host_pub_key']['stdout'] }}"
+        state: present
+      become: yes
+      become_user: hdfs
+  when: ( inventory_hostname == groups['namenodes'][0] )
+
+- name: install keys onto second NameNode
+  block:
+    - name: install first pub key onto second NameNode
+      authorized_key:
+        user: hdfs
+        key: "{{ hostvars[groups['namenodes'][0]]['hdfs_pub_key']['stdout'] }}"
+        state: present
+
+    - name: install first host key onto second NameNode
+      known_hosts:
+        name: "{{ groups['namenodes'][0] }}"
+        key: "{{ groups['namenodes'][0] + ' ' + hostvars[groups['namenodes'][0]]['host_pub_key']['stdout'] }}"
+        state: present
+      become: yes
+      become_user: hdfs
+  when: ( inventory_hostname == groups['namenodes'][1] )
