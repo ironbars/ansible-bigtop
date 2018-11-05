@@ -59,7 +59,7 @@ $ ansible-playbook --tags 'hive-metastore' utils/services/hive/restart-hive.yml
 Requirements
 ------------
 
-OS: CentOS 7.4, CentOS 7.5  
+OS: CentOS 7 (fully tested on 7.4 and 7.5)  
 Hadoop: 2.x  
 Java > 1.6 (but < 1.9)
 
@@ -100,7 +100,6 @@ TODO
 ----
 Add roles for:
 
-- DataNodes
 - ResourceManagers
 - NodeManagers
 - Hadoop Clients
@@ -115,3 +114,5 @@ Also, add support for:
 - non-HA HDFS
 - HA YARN
 - Debian-bases OSes
+
+Need documentation for all roles!  
