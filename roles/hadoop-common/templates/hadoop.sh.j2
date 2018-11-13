@@ -4,6 +4,6 @@
 # with a UID greater than 1000.
 
 if [ `id -u` -gt 1000 ] ; then
-    export HADOOP_HOME=/usr/lib/hadoop
-    export JAVA_HOME=/usr/lib/jvm/java
+    export HADOOP_HOME={{ hadoop_home }}
+    export JAVA_HOME={{ java_home }}
 fi
