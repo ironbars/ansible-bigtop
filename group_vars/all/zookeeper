@@ -1,3 +1,5 @@
+zk_client_port: 2181
+
 zk_quorum:
   nn01: 1
   nn02: 2
