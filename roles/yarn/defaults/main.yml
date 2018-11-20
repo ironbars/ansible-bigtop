@@ -1,0 +1,4 @@
+---
+# defaults file for yarn
+yarn_daemon: nodemanager
+yarn_daemon_name: hadoop-yarn-{{ yarn_daemon }}
