@@ -1,0 +1,61 @@
+{{ ansible_managed | comment('xml') }}
+<configuration>
+  <property>
+    <name>yarn.scheduler.capacity.root.state</name>
+    <value>RUNNING</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.acl_submit_applications</name>
+    <value> </value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.acl_administer_queue</name>
+    <value>yarn,root</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.queues</name>
+    <value>{{ queues | join(',') }}</value>
+  </property>
+{% for q, qconf in queues.iteritems() %}
+
+  <!-- {{ q }} queue START -->
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.state</name>
+    <value>{{ qconf.state }}</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.capacity</name>
+    <value>{{ qconf.capacity }}</value>
+  </property>
+{% if qconf.max_capacity is defined %}
+
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.maximum-capacity</name>
+    <value>{{ qconf.max_capacity }}</value>
+  </property>
+{% endif %}
+
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.acl_submit_applications</name>
+    <value>{% if qconf.users is defined %}{{ qconf.users | join(',') }}{% endif %}{% if qconf.groups is defined %} {{ qconf.groups | join(',') }}{% endif %}</value>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.acl_administer_queue</name>
+    <value>{% if qconf.admin_users is defined %}{{ qconf.admin_users | join(',') }}{% endif %}{% if qconf.admin_groups is defined %} {{ qconf.admin_groups | join(',') }}{% endif %}</value>
+  </property>
+{% if qconf.subqueues is defined %}
+
+  <property>
+    <name>yarn.scheduler.capacity.root.{{ q }}.queues</name>
+    <value>{{ qconf.subqueues | join(',') }}</value>
+  </property>
+{% endif %}
+  <!-- {{ q }} queue END -->
+{% endfor %}
+
+</configuration>

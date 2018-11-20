@@ -1,0 +1,10 @@
+---
+# defaults file for resourcemanager
+queues:
+  default:
+    capacity: 100
+    max_capacity: 100
+    state: "RUNNING"
+    users:
+      - "*"
+    admin_users: "{{ yarn_admins }}"

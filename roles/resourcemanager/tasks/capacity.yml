@@ -1,0 +1,11 @@
+---
+- name: deploy queue configurations
+  template:
+    src: capacity-scheduler.xml.j2
+    dest: "{{ hadoop_conf_dir }}/capacity-scheduler.xml"
+    owner: root
+    group: root
+    mode: 0644
+  notify: refresh queues
+  tags: ['update-queues']
+

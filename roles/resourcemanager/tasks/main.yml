@@ -1,0 +1,9 @@
+---
+# tasks file for resourcemanager
+- name: distribute queue configuration
+  import_tasks: capacity.yml
+  when: yarn_scheduler_type == "capacity"
+
+- name: distribute allocation file
+  import_tasks: fair.yml
+  when: yarn_scheduler_type == "fair"

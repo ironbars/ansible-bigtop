@@ -10,7 +10,11 @@ yarn_nodes_include: "{{ hadoop_conf_dir }}/yarn.include"
 
 yarn_nodes_exclude: "{{ hadoop_conf_dir }}/yarn.exclude"
 
-yarn_scheduler: capacity.CapacityScheduler
+yarn_scheduler_type: capacity
+
+yarn_scheduler_class: CapacityScheduler
+
+yarn_scheduler: "{{ yarn_scheduler_type }}.{{ yarn_scheduler_class }}"
 
 yarn_nm_cores: 8
 
