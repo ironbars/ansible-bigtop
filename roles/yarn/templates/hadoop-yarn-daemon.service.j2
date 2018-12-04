@@ -15,11 +15,11 @@ RemainAfterExit=no
 EnvironmentFile=-/etc/default/hadoop
 RuntimeDirectory={{ yarn_service_name }}
 RuntimeDirectoryMode=0755
-WorkingDirectory={{ yarn_home_dir }}
+WorkingDirectory={{ yarn_working_dir }}
 PIDFile={{ yarn_pid_dir }}/{{ yarn_daemon_name }}.pid
-ExecStart=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} start {{ yarn_daemon }}
+ExecStart={{ yarn_home }}/sbin/yarn-daemon.sh --config {{ hadoop_conf_dir }} start {{ yarn_daemon }}
 ExecStartPost=/usr/bin/sleep 5
-ExecStop=/usr/lib/hadoop/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} stop {{ yarn_daemon }}
+ExecStop={{ yarn_home }}/sbin/yarn-daemon.sh --config {{ hadoop_conf_dir }} stop {{ yarn_daemon }}
 
 [Install]
 WantedBy=multi-user.target

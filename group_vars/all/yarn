@@ -1,10 +1,17 @@
 yarn_service_name: hadoop-yarn
 
-yarn_home_dir: /var/lib/{{ yarn_service_name }}
+### Settings for environment variables ###
+# As with HDFS, `home` here refers to the installation directory
+yarn_home: /usr/lib/hadoop-yarn
+
+# This is the home directory for the `yarn` user
+yarn_working_dir: /var/lib/{{ yarn_service_name }}
 
 yarn_log_dir: /var/log/{{ yarn_service_name }}
 
 yarn_pid_dir: /var/run/{{ yarn_service_name }}
+
+### Settings for config files ###
 
 yarn_nodes_include: "{{ hadoop_conf_dir }}/yarn.include"
 

@@ -9,14 +9,14 @@
 # have a key created and ready to distribute.  Perhaps in the future, we can 
 # add some options to allow such a thing.
 - name: create ssh keypair
-  shell: ssh-keygen -t rsa -N '' -f {{ hdfs_home_dir | quote }}/.ssh/id_rsa
+  shell: ssh-keygen -t rsa -N '' -f {{ hdfs_working_dir | quote }}/.ssh/id_rsa
   become: yes
   become_user: hdfs
   args:
-    creates: "{{ hdfs_home_dir }}/.ssh/id_rsa"
+    creates: "{{ hdfs_working_dir }}/.ssh/id_rsa"
 
 - name: retrieve hdfs pub key
-  shell: cat {{ hdfs_home_dir | quote }}/.ssh/id_rsa.pub
+  shell: cat {{ hdfs_working_dir | quote }}/.ssh/id_rsa.pub
   register: hdfs_pub_key
 
 - name: retrieve public host key
