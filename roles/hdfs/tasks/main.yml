@@ -5,6 +5,14 @@
     name: "{{ hdfs_daemon_name }}"
     state: present
 
+- name: distribute {{ hdfs_daemon }} defaults file
+  template:
+    src: etc-default-hadoop-hdfs-{{ hdfs_daemon }}.j2
+    dest: /etc/default/{{ hdfs_daemon_name }}
+    owner: root
+    group: root
+    mode: 0644
+
 - name: copy out {{ hdfs_daemon }} service file
   template:
     src: hadoop-hdfs-daemon.service.j2

@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+export HADOOP_PID_DIR={{ hdfs_pid_dir }}
+export HADOOP_LOG_DIR={{ hdfs_log_dir }}
+export HADOOP_NAMENODE_USER={{ hdfs_namenode_user }}
+export HADOOP_SECONDARYNAMENODE_USER={{ hdfs_secondarynamenode_user }}
+export HADOOP_DATANODE_USER={{ hdfs_datanode_user }}
+export HADOOP_IDENT_STRING={{ hdfs_ident_string }}
+
+{% if hdfs_secure %}
+export HADOOP_SECURE_DN_USER={{ hdfs_secure_dn_user }}
+export HADOOP_SECURE_DN_PID_DIR={{ hdfs_secure_dn_pid_dir }}
+export HADOOP_SECURE_DN_LOG_DIR={{ hdfs_secure_dn_log_dir }}
+{% endif %}

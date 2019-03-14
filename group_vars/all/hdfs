@@ -13,9 +13,29 @@ hdfs_log_dir: /var/log/{{ hdfs_service_name }}
 
 hdfs_pid_dir: /var/run/{{ hdfs_service_name }}
 
+hdfs_user: hdfs
+
+hdfs_namenode_user: {{ hdfs_user }}
+
+hdfs_secondarynamenode_user: {{ hdfs_user }}
+
+hdfs_datanode_user: {{ hdfs_user }}
+
+hdfs_ident_string: {{ hdfs_user }}
+
+# Kerberized settings
+hdfs_secure_dn_user: {{ hdfs_user }}
+
+hdfs_secure_dn_pid_dir: {{ hdfs_pid_dir }}
+
+hdfs_secure_dn_log_dir: {{ hdfs_log_dir }}
+
 ### Settings for config file ###
 
 hdfs_ha: true
+
+# Kerberos enabled
+hdfs_secure: false
 
 hdfs_nodes_include: "{{ hadoop_conf_dir }}/dfs.include"
 

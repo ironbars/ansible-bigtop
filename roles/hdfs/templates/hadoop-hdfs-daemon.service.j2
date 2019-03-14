@@ -13,6 +13,7 @@ KillMode=process
 SuccessExitStatus=143
 RemainAfterExit=no
 EnvironmentFile=-/etc/default/hadoop
+EnvironmentFile=-/etc/default/{{ hdfs_daemon_name }}
 RuntimeDirectory={{ hdfs_service_name }}
 RuntimeDirectoryMode=0755
 WorkingDirectory={{ hdfs_working_dir }}
