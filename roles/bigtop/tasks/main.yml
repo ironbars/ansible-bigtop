@@ -1,0 +1,16 @@
+---
+# tasks file for bigtop
+- name: install java
+  yum:
+    name: "{{ bigtop_java_pkgs }}"
+    state: installed
+
+- name: setup bigtop repo
+  yum_repository:
+    name: "{{ bigtop_repo.name }}"
+    description: "{{ bigtop_repo.description | default(omit) }}"
+    baseurl: "{{ bigtop_repo.baseurl }}"
+    gpgcheck: "{{ bigtop_repo.gpgcheck }}"
+    gpgkey: "{{ bigtop_repo.gpgkey | default(omit) }}"
+    file: "{{ bigtop_repo.file }}"
+    enabled: yes

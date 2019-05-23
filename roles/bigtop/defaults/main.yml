@@ -1,0 +1,17 @@
+---
+# defaults file for bigtop
+bigtop_java_version: 1.8.0
+
+bigtop_java_pkgs:
+  - java-{{ bigtop_java_version }}-openjdk
+  - java-{{ bigtop_java_version }}-openjdk-devel
+
+bigtop_release: 1.2.1
+
+bigtop_repo:
+  name: bigtop
+  description: "Bigtop Hadoop packages"
+  baseurl: "http://repos.bigtop.apache.org/releases/{{ bigtop_release }}/centos/7/x86_64"
+  gpgcheck: yes
+  gpgkey: "https://dist.apache.org/repos/dist/release/bigtop/KEYS"
+  file: "bigtop"

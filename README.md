@@ -69,21 +69,10 @@ Starting at the top, the following variables must properly defined in
 - `cluster_name`: name of your cluster (this will be your default HDFS
   namespace)
 - `dns_domain`: domain name of your cluster
-- `java_version`: version of java that you wish to use (meant to be part of the
-  name of an installable package)
-- `java_pkgs`: a list of Java packages that need to be installed
-- `bigtop_repo`: a dictionary that defines a repository from which to install
-  packages built using Bigtop.
 
-Currently, only RedHat derived distributions are supported, so `bigtop_repo`
-defines a yum repository, and `java_pkgs` is a list of Java packages that can be
-found in CentOS/RedHat repositories by default.  Also of note is that these
-playbooks have only been tested using Java 1.8 (OpenJDK).  To use Oracle Java,
-change the names of these packages in the `java_pkgs` variable.  
-
-The `bigtop_repo` variable currently points to a repo hosted by the maintainers
-of the Bigtop project.  This could easily be changed to a local repo containing
-packages built by you for your personal or professional use.
+Also of note is that these playbooks have only been tested using Java 1.8
+(OpenJDK).  To use Oracle Java, change the names of these packages in the
+`java_pkgs` variable.  
 
 Limitations
 -----------
