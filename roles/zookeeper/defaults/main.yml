@@ -7,3 +7,8 @@ zk_max_client_cnxns: 50
 zk_tick_time: 2000
 zk_init_limit: 10
 zk_sync_limit: 5
+zk_client_port: 2181
+zk_quorum:
+  zk01: 1
+  zk02: 2
+  zk03: 3

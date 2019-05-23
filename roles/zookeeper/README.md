@@ -61,8 +61,10 @@ zk_sync_limit: 5
 Here, `zk_init_limit` is equal to 20000 ms (i.e. 20 s) and `zk_sync_limit` is
 equal to 10000 ms (10 s).  
 
-*The following two variables should be set in `group_vars/all` (or under
-`group_vars/all/` if using multiple files for all inventory variables).*
+*The following two variables have defaults set in defaults/main.yml.  However,
+at the very least, you should probably override `zk_quorum`.  The recommendation 
+is to set in `group_vars/all` (or under `group_vars/all/` if using multiple  
+files for all inventory variables).*
 
 ### `zk_client_port`
 
