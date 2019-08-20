@@ -2,7 +2,7 @@
 - hosts: resourcemanagers
   tasks:
     - name: restart resourcemanager service
-      service:
+      systemd:
         name: hadoop-yarn-resourcemanager
         state: restarted
 
@@ -12,7 +12,7 @@
         port: 8030
 
     - name: restart the historyserver
-      service:
+      systemd:
         name: hadoop-yarn-historyserver
         state: restarted
   tags: ["yarn", "resourcemanagers"]
@@ -20,7 +20,7 @@
 - hosts: nodemanagers
   tasks:
     - name: restart nodemanagers
-      service:
+      systemd:
         name: hadoop-yarn-nodemanager
         state: restarted
   tags: ["yarn", "nodemanagers"]

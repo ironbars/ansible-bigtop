@@ -3,7 +3,7 @@
   serial: 1
   tasks:
     - name: restart journalnode service
-      service:
+      systemd:
         name: hadoop-hdfs-journalnode
         state: restarted
     
@@ -18,12 +18,12 @@
   serial: 1
   tasks:
     - name: restart zkfc
-      service:
+      systemd:
         name: hadoop-hdfs-zkfc
         state: restarted
 
     - name: restart namenode service
-      service:
+      systemd:
         name: hadoop-hdfs-namenode
         state: restarted
 
@@ -37,7 +37,7 @@
 - hosts: datanodes
   tasks:
     - name: restart datanode service
-      service:
+      systemd:
         name: hadoop-hdfs-datanode
         state: restarted
   tags: ["hdfs", "datanodes"]

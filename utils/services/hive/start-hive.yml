@@ -27,7 +27,7 @@
 - hosts: hive-metastore
   tasks:
     - name: start the hive metastore
-      service:
+      systemd:
         name: hive-metastore
         state: started
         enabled: no
@@ -36,7 +36,7 @@
 - hosts: hive-server
   tasks:
     - name: start hiveserver2
-      service:
+      systemd:
         name: hive-server2
         state: started
         enabled: no

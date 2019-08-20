@@ -15,7 +15,7 @@
       tags: ["start-scheduling"]
 
     - name: start resourcemanager
-      service:
+      systemd:
         name: hadoop-yarn-resourcemanager
         state: started
         enabled: no
@@ -26,7 +26,7 @@
         port: 8030
 
     - name: start the historyserver
-      service:
+      systemd:
         name: hadoop-yarn-historyserver
         state: started
         enabled: no
@@ -42,7 +42,7 @@
 - hosts: nodemanagers
   tasks:
     - name: start nodemanagers
-      service:
+      systemd:
         name: hadoop-yarn-nodemanager
         state: started
         enabled: no

@@ -2,7 +2,7 @@
 - hosts: hive-metastore
   tasks:
     - name: restart the hive metastore
-      service:
+      systemd:
         name: hive-metastore
         state: restarted
   tags: ["hive", "hive-metastore"]
@@ -10,7 +10,7 @@
 - hosts: hive-server
   tasks:
     - name: restart hiveserver2
-      service:
+      systemd:
         name: hive-server2
         state: restarted
   tags: ["hive", "hive-server"]

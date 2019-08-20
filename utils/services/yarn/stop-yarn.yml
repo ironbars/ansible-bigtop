@@ -19,7 +19,7 @@
 - hosts: nodemanagers
   tasks:
     - name: stop nodemanagers
-      service:
+      systemd:
         name: hadoop-yarn-nodemanager
         state: stopped
   tags: ["yarn", "nodemanagers"]
@@ -27,12 +27,12 @@
 - hosts: resourcemanagers
   tasks:
     - name: stop historyserver
-      service:
+      systemd:
         name: hadoop-yarn-historyserver
         state: stopped
 
     - name: stop resourcemanager
-      service:
+      systemd:
         name: hadoop-yarn-resourcemanager
         state: stopped
   tags: ["yarn", "resourcemanagers"]

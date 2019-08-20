@@ -2,7 +2,7 @@
 - hosts: journalnodes
   tasks:
     - name: start journalnodes
-      service:
+      systemd:
         name: hadoop-hdfs-journalnode
         state: started
         enabled: no
@@ -27,7 +27,7 @@
       when: ( format_hdfs == true )
 
     - name: start first namenode
-      service:
+      systemd:
         name: hadoop-hdfs-namenode
         state: started
         enabled: no
@@ -46,7 +46,7 @@
       when: ( format_hdfs == true )
 
     - name: start second namenode
-      service:
+      systemd:
         name: hadoop-hdfs-namenode
         state: started
         enabled: no
@@ -61,7 +61,7 @@
         delay: 5
 
     - name: start zkfc
-      service:
+      systemd:
         name: hadoop-hdfs-zkfc
         state: started
         enabled: no
@@ -70,7 +70,7 @@
 - hosts: datanodes
   tasks:
     - name: start datanodes
-      service:
+      systemd:
         name: hadoop-hdfs-datanode
         state: started
         enabled: no

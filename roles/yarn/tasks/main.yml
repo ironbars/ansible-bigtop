@@ -14,7 +14,7 @@
     mode: 0644
 
 - name: explicitly stop/disable {{ yarn_daemon }}
-  service:
+  systemd:
     name: "{{ yarn_daemon_name }}"
     state: stopped
     enabled: no

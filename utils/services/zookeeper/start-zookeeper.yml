@@ -2,7 +2,7 @@
 - hosts: zookeeper
   tasks:
     - name: start zookeeper servers
-      service:
+      systemd:
         name: zookeeper-server
         state: started
     
