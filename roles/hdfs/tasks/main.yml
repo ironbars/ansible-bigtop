@@ -22,7 +22,7 @@
     mode: 0644
 
 - name: explicitly stop/disable {{ hdfs_daemon }}
-  service:
+  systemd:
     name: "{{ hdfs_daemon_name }}"
     state: stopped
     enabled: no

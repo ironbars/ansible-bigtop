@@ -2,7 +2,7 @@
 - hosts: hive-server
   tasks:
     - name: stop hiveserver2
-      service:
+      systemd:
         name: hive-server2
         state: stopped
         enabled: no
@@ -11,7 +11,7 @@
 - hosts: hive-metastore
   tasks:
     - name: stop the hive metastore
-      service:
+      systemd:
         name: hive-metastore
         state: stopped
         enabled: no

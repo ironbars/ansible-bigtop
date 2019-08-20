@@ -2,7 +2,7 @@
 - hosts: datanodes
   tasks:
     - name: stop datanodes
-      service:
+      systemd:
         name: hadoop-hdfs-datanode
         state: stopped
   tags: ["hdfs", "datanodes"]
@@ -10,12 +10,12 @@
 - hosts: namenodes
   tasks:
     - name: stop namenodes
-      service:
+      systemd:
         name: hadoop-hdfs-namenode
         state: stopped
 
     - name: stop zkfc
-      service:
+      systemd:
         name: hadoop-hdfs-zkfc
         state: stopped
   tags: ["hdfs", "namenodes", "journalnodes"]
@@ -23,7 +23,7 @@
 - hosts: journalnodes
   tasks:
     - name: stop journalnodes
-      service:
+      systemd:
         name: hadoop-hdfs-journalnode
         state: stopped
   tags: ["hdfs", "journalnodes"]

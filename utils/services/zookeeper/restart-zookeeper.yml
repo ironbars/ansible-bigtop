@@ -3,7 +3,7 @@
   serial: 1
   tasks:
     - name: restart zookeeper server
-      service:
+      systemd:
         name: zookeeper-server
         state: restarted
 
