@@ -5,6 +5,7 @@
       systemd:
         name: zookeeper-server
         state: started
+        enabled: yes
     
     - name: wait for zookeeper to become available
       wait_for:

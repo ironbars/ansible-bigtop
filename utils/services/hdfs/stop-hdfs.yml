@@ -5,6 +5,7 @@
       systemd:
         name: hadoop-hdfs-datanode
         state: stopped
+        enabled: no
   tags: ["hdfs", "datanodes"]
 
 - hosts: namenodes

@@ -1,19 +1,6 @@
 ---
 - hosts: resourcemanagers
   tasks:
-    - name: check if yarn is running
-      shell: "ps -ef | awk '$1 ~ /yarn/ {print $1}'"
-      register: yarn_running
-      tags: ["start-scheduling"]
-
-    - name: start yarn scheduling
-      xml:
-        path: /etc/hadoop/conf/capacity-scheduler.xml
-        xpath: /configuration/property[name='yarn.scheduler.capacity.root.default.state']/value
-        value: "RUNNING"
-      notify: refresh queues
-      tags: ["start-scheduling"]
-
     - name: start resourcemanager
       systemd:
         name: hadoop-yarn-resourcemanager
@@ -30,13 +17,6 @@
         name: hadoop-yarn-historyserver
         state: started
         enabled: no
-
-  handlers:
-    - name: refresh queues
-      become: yes
-      become_user: yarn
-      shell: "yarn rmadmin -refreshQueues"
-      when: ( yarn_running.stdout == "yarn" )
   tags: ["yarn", "resourcemanagers"]
 
 - hosts: nodemanagers
@@ -45,5 +25,5 @@
       systemd:
         name: hadoop-yarn-nodemanager
         state: started
-        enabled: no
+        enabled: yes
   tags: ["yarn", "nodemanagers"]

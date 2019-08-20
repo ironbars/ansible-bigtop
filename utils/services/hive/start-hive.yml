@@ -30,7 +30,7 @@
       systemd:
         name: hive-metastore
         state: started
-        enabled: no
+        enabled: yes
   tags: ["hive", "hive-metastore"]
 
 - hosts: hive-server
@@ -39,5 +39,5 @@
       systemd:
         name: hive-server2
         state: started
-        enabled: no
+        enabled: yes
   tags: ["hive", "hive-server"]

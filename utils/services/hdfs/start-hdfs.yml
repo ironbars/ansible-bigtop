@@ -73,5 +73,5 @@
       systemd:
         name: hadoop-hdfs-datanode
         state: started
-        enabled: no
+        enabled: yes
   tags: ["hdfs", "datanodes"]
