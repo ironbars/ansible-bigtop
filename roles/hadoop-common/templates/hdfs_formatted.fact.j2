@@ -3,9 +3,9 @@
 {{ ansible_managed | comment }}
 
 if [[ -d {{ hdfs_name_dir }} ]]; then
-		HDFS_FORMATTED=true
+    HDFS_FORMATTED=true
 else
-		HDFS_FORMATTED=false
+    HDFS_FORMATTED=false
 fi
 
 echo "{\"hdfs_formatted\": ${HDFS_FORMATTED}}"
