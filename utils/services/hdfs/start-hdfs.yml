@@ -17,14 +17,14 @@
 - hosts: namenodes[0]
   tasks:
     - block:
-        - name: format hdfs
-          shell: "hdfs namenode -format {{ cluster_name }} -force"
+        - name: format hdfs if necessary
+          shell: hdfs namenode -format {{ cluster_name | quote }} -force
 
         - name: initialize hdfs shared edits directory
-          shell: "hdfs namenode -initializeSharedEdits -force"
+          shell: hdfs namenode -initializeSharedEdits -force
       become: yes
       become_user: hdfs
-      when: ( format_hdfs == true )
+      when: ( hdfs_formatted == false )
 
     - name: start first namenode
       systemd:
@@ -36,14 +36,14 @@
 - hosts: namenodes[1]
   tasks:
     - block:
-        - name: bootstrap standby namenode
-          shell: "hdfs namenode -bootstrapStandby"
+        - name: bootstrap standby namenode if necessary
+          shell: hdfs namenode -bootstrapStandby
 
         - name: format zookeeper
-          shell: "hdfs zkfc -formatZK"
+          shell: hdfs zkfc -formatZK
       become: yes
       become_user: hdfs
-      when: ( format_hdfs == true )
+      when: ( hdfs_formatted == false )
 
     - name: start second namenode
       systemd:
