@@ -86,3 +86,19 @@
     owner: root
     group: root
     mode: 0644
+
+- name: create custom facts directory
+  file:
+    name: /etc/ansible/facts.d
+    state: directory
+    owner: root
+    group: root
+
+- name: insert fact file for formatting HDFS
+  template:
+    src: hdfs_format.fact.j2
+    dest: /etc/ansible/facts.d/hdfs_format.fact
+    owner: root
+    group: root
+    mode: 0755
+  when: ( "namenodes" in group_names )
