@@ -96,8 +96,8 @@
 
 - name: insert fact file for formatting HDFS
   template:
-    src: hdfs_format.fact.j2
-    dest: /etc/ansible/facts.d/hdfs_format.fact
+    src: hdfs_formatted.fact.j2
+    dest: /etc/ansible/facts.d/hdfs_formatted.fact
     owner: root
     group: root
     mode: 0755
