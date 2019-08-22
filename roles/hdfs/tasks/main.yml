@@ -1,5 +1,18 @@
 ---
 # tasks file for hdfs
+- name: get Hadoop installation location
+  shell: grep HADOOP_HOME /etc/default/hadoop | cut -f2 -d"="
+  register: home_dir
+
+- name: get Hadoop conf location
+  shell: grep HADOOP_CONF_DIR /etc/default/hadoop | cut -f2 -d"="
+  register: conf_dir
+
+- name: set the names of relevant directories (install and conf locations)
+  set_fact:
+    hdfs_hadoop_home: "{{ home_dir.stdout }}"
+    hdfs_conf_dir: "{{ conf_dir.stdout }}"
+
 - name: install {{ hdfs_daemon }}
   yum:
     name: "{{ hdfs_daemon_name }}"
@@ -26,3 +39,31 @@
     name: "{{ hdfs_daemon_name }}"
     state: stopped
     enabled: no
+
+- name: copy out hdfs-site.xml template
+  template:
+    src: hdfs-site.xml.j2
+    dest: "{{ hdfs_conf_dir }}/hdfs-site.xml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy out node inclusion/exclusion lists
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ hdfs_conf_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - {{ hdfs_nodes_include }}
+    - {{ hdfs_nodes_exclude }}
+
+- name: insert fact file for formatting HDFS
+  template:
+    src: hdfs_formatted.fact.j2
+    dest: /etc/ansible/facts.d/hdfs_formatted.fact
+    owner: root
+    group: root
+    mode: 0755
+  when: ( "namenodes" in group_names )

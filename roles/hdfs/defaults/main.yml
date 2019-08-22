@@ -1,4 +1,72 @@
 ---
 # defaults file for hdfs
+hdfs_service_name: hadoop-hdfs
+
+# By default try to install a datanode, but this role is not meant to be run 
+# alone
 hdfs_daemon: datanode
-hdfs_daemon_name: hadoop-hdfs-{{ hdfs_daemon }}
+
+hdfs_daemon_name: {{ hdfs_service_name }}-{{ hdfs_daemon }}
+
+### Settings for environment variables ###
+
+# In keeping with the apparent convention, the `home` for the service will 
+# refer to the installation directory
+hdfs_home: /usr/lib/{{ hdfs_service_name }}
+
+# This is the home directory for the `hdfs` user
+hdfs_working_dir: /var/lib/{{ hdfs_service_name }}
+
+hdfs_log_dir: /var/log/{{ hdfs_service_name }}
+
+hdfs_pid_dir: /var/run/{{ hdfs_service_name }}
+
+hdfs_user: hdfs
+
+hdfs_namenode_user: {{ hdfs_user }}
+
+hdfs_secondarynamenode_user: {{ hdfs_user }}
+
+hdfs_datanode_user: {{ hdfs_user }}
+
+hdfs_ident_string: {{ hdfs_user }}
+
+# Kerberized settings
+hdfs_secure_dn_user: {{ hdfs_user }}
+
+hdfs_secure_dn_pid_dir: {{ hdfs_pid_dir }}
+
+hdfs_secure_dn_log_dir: {{ hdfs_log_dir }}
+
+### Settings for config file ###
+
+hdfs_ha: true
+
+# Kerberos enabled
+hdfs_secure: false
+
+hdfs_nodes_include: dfs.include
+
+hdfs_nodes_exclude: dfs.exclude
+
+hdfs_name_dir: "{{ hdfs_home_dir }}/cache/hdfs/dfs/name"
+
+hdfs_journal_dir: "{{ hdfs_home_dir }}/jn"
+
+hdfs_supergroup: hadoop
+
+hdfs_umask: "027"
+
+hdfs_fencing_methods:
+  - sshfence(hdfs)
+  - shell(/bin/true)
+
+hdfs_data_dirs:
+  - /data/01
+  - /data/02
+  - /data/03
+  - /data/04
+
+hdfs_admins:
+  - hdfs
+  - root

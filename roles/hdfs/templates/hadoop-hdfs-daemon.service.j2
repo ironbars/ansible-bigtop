@@ -18,9 +18,9 @@ RuntimeDirectory={{ hdfs_service_name }}
 RuntimeDirectoryMode=0755
 WorkingDirectory={{ hdfs_working_dir }}
 PIDFile={{ hdfs_pid_dir }}/{{ hdfs_daemon_name }}.pid
-ExecStart={{ hadoop_home }}/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} start {{ hdfs_daemon }}
+ExecStart={{ hdfs_hadoop_home }}/sbin/hadoop-daemon.sh --config {{ hdfs_conf_dir }} start {{ hdfs_daemon }}
 ExecStartPost=/usr/bin/sleep 5
-ExecStop={{ hadoop_home }}/sbin/hadoop-daemon.sh --config {{ hadoop_conf_dir }} stop {{ hdfs_daemon }}
+ExecStop={{ hdfs_hadoop_home }}/sbin/hadoop-daemon.sh --config {{ hdfs_conf_dir }} stop {{ hdfs_daemon }}
 
 [Install]
 WantedBy=multi-user.target

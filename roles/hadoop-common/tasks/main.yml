@@ -26,14 +26,6 @@
     group: root
     mode: 0644
 
-- name: copy out hdfs-site.xml template
-  template:
-    src: hdfs-site.xml.j2
-    dest: "{{ hadoop_conf_dir }}/hdfs-site.xml"
-    owner: root
-    group: root
-    mode: 0644
-
 - name: copy out yarn-site.xml template
   template:
     src: yarn-site.xml.j2
@@ -66,7 +58,7 @@
     group: root
     mode: 0644
 
-- name: copy out node inclusion/exclusion lists for HDFS and YARN
+- name: copy out node inclusion/exclusion lists for YARN
   template:
     src: "{{ item }}.j2"
     dest: "{{ hadoop_conf_dir }}/{{ item }}"
@@ -74,8 +66,6 @@
     group: root
     mode: 0644
   with_items:
-    - dfs.include
-    - dfs.exclude
     - yarn.include
     - yarn.exclude
 
@@ -94,11 +84,3 @@
     owner: root
     group: root
 
-- name: insert fact file for formatting HDFS
-  template:
-    src: hdfs_formatted.fact.j2
-    dest: /etc/ansible/facts.d/hdfs_formatted.fact
-    owner: root
-    group: root
-    mode: 0755
-  when: ( "namenodes" in group_names )
