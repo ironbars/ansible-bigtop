@@ -1,5 +1,20 @@
 ---
 # tasks file for hadoop-common
+# If the group zookeeper exists and is populated, we will assume this will be 
+# an HA deployment.  We perhaps need a better way to determine if HA will be 
+# configured, but this should work for the time being.
+- block:
+  - name: get configured zookeeper client port
+    shell: grep clientPort /etc/zookeeper/zoo.cfg | cut -f2 -d"="
+    delegate_to: "{{ groups['zookeeper'] }}"
+    run_once: true
+    register: zk_client_port
+
+  - name: set zookeeper client port value
+    set_fact:
+      hadoop_zk_client_port: "{{ zk_client_port.stdout }}"
+  when: ( groups['zookeeper'] is defined ) and ( groups['zookeeper'] | length > 0)
+
 - name: copy out sh env file
   template:
     src: hadoop.sh.j2

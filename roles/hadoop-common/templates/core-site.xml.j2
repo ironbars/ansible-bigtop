@@ -28,12 +28,14 @@
     <name>fs.trash.interval</name>
     <value>1440</value>
   </property>
+{% if groups['zookeeper'] is defined and groups['zookeeper'] | length > 0 %}
 
   <!-- ZooKeeper servers that will manage auto failover -->
   <property>
     <name>ha.zookeeper.quorum</name>
-		<value>{{ groups['zookeeper'] | join('.' + dns_domain + ':' + zk_client_port + ',') }}.{{ dns_domain }}:{{ zk_client_port }}</value>
+		<value>{{ groups['zookeeper'] | join('.' + dns_domain + ':' + hadoop_zk_client_port + ',') }}.{{ dns_domain }}:{{ hadoop_zk_client_port }}</value>
   </property>
+{% endif %}
 
   <!-- Internal between trash cleanup runs, in minutes -->
   <property>
