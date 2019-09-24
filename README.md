@@ -1,5 +1,7 @@
 Ansible for Bigtop
 ==================
+**WARNING: Some of the more recent changes here have not been fully tested.**
+
 This repo is a collection of Ansible roles and playbooks for the deployment of a
 Hadoop cluster using packages built by [Apache Bigtop](http://bigtop.apache.org).
 These scripts are eventually intended to be submitted to that project, as
